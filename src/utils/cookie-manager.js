@@ -17,12 +17,12 @@ let CookieManager = {
    * 
    * @param {String} cookieName Name of the cookie to set.
    * @param {String} cookieValue String value of the cookie to set.
-   * @param {Number} expireTimeInHours Time in hours till the cookie expires. (default: 8)
+   * @param {Number} expireTimeInHours Time in hours till the cookie expires. (default: 10 days)
    */
   setCookie: function (
     cookieName,
     cookieValue,
-    expireTimeInHours = config.cookieExpireTime
+    expireTimeInHours = config.defaultCookieExpireTime
   ) {
     // Calculate the expire time
     var d = new Date();
