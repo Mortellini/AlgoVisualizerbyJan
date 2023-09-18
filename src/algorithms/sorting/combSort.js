@@ -1,0 +1,45 @@
+import sleep from "../generalSupport/sleep.js";
+import validateSorting from "./support/validateSorting.js";
+import swap from "./support/swap.js";
+
+async function combSort(array, options) {
+  let gap = array.length;
+  let swapped = true;
+
+  while (gap !== 1 || swapped) {
+
+    swapped = false;
+    gap = getGap(gap);
+
+    for (let i = 0; i < array.length - gap; i++) {
+      if (!options.cancelled) return;
+
+      if (options.showCompare) {
+        array[i][1] = 1;
+        array[i + gap][1] = 1;
+      }
+      if (array[i][0] > array[i + gap][0]) {
+        swap(array, i, i + gap, options.showSwap);
+        swapped = true;
+      }
+
+      array[i][1] = 0;
+      array[i + gap][1] = 0;
+
+      if (!options.onlyDelayOuterLoop) await sleep(options.delay);
+    }
+
+    if (array.length <= 2000) await sleep(options.delay);
+  }
+  validateSorting(array, options);
+}
+
+function getGap(gap) {
+  gap = parseInt((gap * 10) / 13, 10);
+  if (gap < 1) {
+    return 1;
+  }
+  return gap;
+}
+
+export default combSort;

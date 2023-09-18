@@ -1,0 +1,54 @@
+.algo-display {
+  display: grid;
+  grid-template-columns: 1fr 30px;
+  grid-template-rows: 1fr 30px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--main-color);
+  width: 100%;
+  height: 100%;
+
+  .algo-display-canvas {
+    height: 100%;
+    width: 100%;
+    #canvas {
+      background-color: var(--canvas-background);
+      color: var(--canvas-main);
+    }
+
+  }
+
+  .algo-display-controls {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--main-color);
+    height: 100%;
+    width: 100%;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .algo-display-description {
+    grid-column: 1/3;
+    display: flex;
+    background-color: var(--main-color);
+    height: 100%;
+    width: 100%;
+
+    .algo-display-description-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .algo-display-description-text {
+      font-size: 1rem;
+      font-weight: 400;
+      text-align: center;
+    }
+  }
+  .icon {
+    color: var(--text-light);
+    font-size: 24px;
+    padding: 3px;
+  }
+}
