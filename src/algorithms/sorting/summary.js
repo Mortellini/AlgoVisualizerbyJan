@@ -22,7 +22,7 @@ const sortingAlgoritms = [
     function: selectionSort,
     description: (
       <div>
-        <h2>Selection Sort</h2>
+        <h3>Selection Sort</h3>
         <p>
           Selection Sort is a simple sorting algorithm that works by dividing
           the input list into two parts: the sorted part and the unsorted part.
@@ -61,7 +61,7 @@ const sortingAlgoritms = [
     function: insertionSort,
     description: (
       <div>
-        <h2>Insertion Sort</h2>
+        <h3>Insertion Sort</h3>
         <p>
           Insertion Sort is a simple sorting algorithm that builds the final
           sorted array one item at a time. It works by taking one element from
@@ -107,7 +107,7 @@ const sortingAlgoritms = [
     function: bubbleSort,
     description: (
       <div>
-        <h2>Bubble Sort</h2>
+        <h3>Bubble Sort</h3>
         <p>
           Bubble Sort is a simple sorting algorithm that repeatedly steps
           through the list to be sorted, compares adjacent elements, and swaps
@@ -149,7 +149,7 @@ const sortingAlgoritms = [
     function: combSort,
     description: (
       <div>
-        <h2>Comb Sort</h2>
+        <h3>Comb Sort</h3>
         <p>
           Comb Sort is a relatively simple sorting algorithm that improves upon
           the Bubble Sort algorithm by introducing a gap or stride value for
@@ -189,7 +189,7 @@ const sortingAlgoritms = [
     function: cocktailSort,
     description: (
       <div>
-        <h2>Cocktail Sort</h2>
+        <h3>Cocktail Sort</h3>
         <p>
           Cocktail Sort, also known as Bidirectional Bubble Sort or Shaker Sort,
           is a variation of the Bubble Sort algorithm. It works by sorting the
@@ -236,7 +236,7 @@ const sortingAlgoritms = [
     function: mergeSort,
     description: (
       <div>
-        <h2>Merge Sort</h2>
+        <h3>Merge Sort</h3>
         <p>
           Merge Sort is a highly efficient, comparison-based sorting algorithm
           that follows the divide-and-conquer approach. It works by recursively
@@ -273,7 +273,7 @@ const sortingAlgoritms = [
     function: timSort,
     description: (
       <div>
-        <h2>Tim Sort</h2>
+        <h3>Tim Sort</h3>
         <p>
           Tim Sort is a hybrid sorting algorithm derived from Merge Sort and
           Insertion Sort. It is designed to perform well on many kinds of
@@ -309,7 +309,7 @@ const sortingAlgoritms = [
     function: quickSort,
     description: (
       <div>
-        <h2>Quick Sort</h2>
+        <h3>Quick Sort</h3>
         <p>
           Quick Sort is a highly efficient, comparison-based sorting algorithm
           that follows the divide-and-conquer approach. It works by selecting a
@@ -346,7 +346,7 @@ const sortingAlgoritms = [
     function: heapSort,
     description: (
       <div>
-        <h2>Heap Sort</h2>
+        <h3>Heap Sort</h3>
         <p>
           Heap Sort is a comparison-based sorting algorithm that utilizes a
           binary heap data structure to achieve efficient sorting. It is an
@@ -385,7 +385,7 @@ const sortingAlgoritms = [
     function: radixSort,
     description: (
       <div>
-        <h2>Radix Sort</h2>
+        <h3>Radix Sort</h3>
         <p>
           Radix Sort is a non-comparative, integer-based sorting algorithm that
           works by sorting numbers digit by digit. It is particularly
@@ -427,7 +427,7 @@ const sortingAlgoritms = [
     function: countingSort,
     description: (
       <div>
-        <h2>Counting Sort</h2>
+        <h3>Counting Sort</h3>
         <p>
           Counting Sort is a non-comparative, integer-based sorting algorithm
           that works by counting the frequency of each element in the input
@@ -473,7 +473,7 @@ const sortingAlgoritms = [
     function: bogoSort,
     description: (
       <div>
-        <h2>Bogo Sort</h2>
+        <h3>Bogo Sort</h3>
         <p>
           Bogo Sort, short for "Bogosort" or "Stupid Sort," is a highly
           inefficient and humorous sorting algorithm. It works by randomly

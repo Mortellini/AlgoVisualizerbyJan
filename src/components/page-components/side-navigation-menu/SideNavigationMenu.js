@@ -16,17 +16,13 @@ import "./SideNavigationMenu.scss";
  * Side navigation menu
  * @param {Object} props the props
  * @param {Function} props.selectedItemChanged the selected item changed handler
+ * @param {Function} props.toggleMenu the toggle menu handler
+ * @param {boolean} props.menuStatus the menu status
+ * @param {boolean} props.transition the transition
  * @returns {JSX.Element} the side navigation menu
  */
 export default function SideNavigationMenu(props) {
-  const { selectedItemChanged } = props;
-  const [menuStatus, toggleMenu] = useState(CookieManager.getCookie("sidebar") === "true");
-  const [transition, setTransition] = useState(false);
-  const openMenu = useCallback(() => {
-    CookieManager.setCookie("sidebar", !menuStatus);
-    toggleMenu(!menuStatus);
-    setTransition(true);
-  }, [menuStatus]);
+  const { selectedItemChanged, menuStatus, toggleMenu, transition } = props;
 
   const { isLarge } = useScreenSize();
   function normalizePath() {
@@ -54,7 +50,7 @@ export default function SideNavigationMenu(props) {
       opened={menuStatus}
       mode={"overlay"}
     >
-      <div className="side-naviagation-menu-header" onClick={openMenu}>
+      <div className="side-naviagation-menu-header" onClick={toggleMenu}>
         <div className="side-naviagation-menu-header-title">
           <i className="fa-solid fa-bars"></i>
           <h1 className="side-naviagation-menu-header-title-text">

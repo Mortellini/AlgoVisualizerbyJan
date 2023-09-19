@@ -25,13 +25,19 @@ export default function AlgoDisplay(props) {
   const [showControls, setShowControls] = useState(false);
   const canvasRef = useRef(null);
 
-  const toggleDescription = () => {
+  const toggleDescription = (e) => {
+    e.stopPropagation();
     setShowDescription(!showDescription);
     setShowControls(false);
   };
-  const toggleControls = () => {
+  const toggleControls = (e) => {
+    e.stopPropagation();
     setShowDescription(false);
     setShowControls(!showControls);
+  };
+  const closePanels = () => {
+    setShowDescription(false);
+    setShowControls(false);
   };
 
   useEffect(() => {
@@ -52,7 +58,7 @@ export default function AlgoDisplay(props) {
 
 
   return (
-    <div className="algo-display">
+    <div className="algo-display" onClick={closePanels}>
       <div className="algo-display-canvas">
         <canvas id="canvas" ref={canvasRef} width={0} height={0}></canvas>
         <div className="algo-display-canvas-overlay">

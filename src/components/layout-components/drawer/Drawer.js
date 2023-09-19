@@ -36,14 +36,9 @@ export default function Drawer(props) {
     } else {
       setAnimationClass(drawerClass + "-shrink");
     }
-    setTimeout(() => {
-      setAnimationClass(drawerClass + (opened ? "" : "-closed"));
-    }, animationDuration);
 
   }, [opened]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // TODO: Rewrite to be more generic (top/bottom/left/right)
-  // TODO: Make animation only happen when the drawer is opened/closed not on every render
   return (
     <div className={"drawer " + animationClass + " " + drawerStyle}>
       <div className={"drawer-content "}>

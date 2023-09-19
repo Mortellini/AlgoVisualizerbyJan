@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router";
 
 import SideNavigationMenu from "../../components/page-components/side-navigation-menu/SideNavigationMenu";
 import Header from "../../components/page-components/header/Header";
 import Footer from "../../components/page-components/footer/Footer";
+import CookieManager from "../../utils/cookie-manager";
 
 import "./side-nav-toolbar.scss";
 
@@ -15,6 +16,20 @@ import "./side-nav-toolbar.scss";
  */
 export default function SideNavToolbar({ children }) {
   const navigate = useNavigate();
+  const [menuStatus, setMenu] = useState(
+    CookieManager.getCookie("sidebar") === "true"
+  );
+  const [transition, setTransition] = useState(false);
+  const toggleMenu = useCallback(() => {
+    CookieManager.setCookie("sidebar", !menuStatus);
+    setMenu(!menuStatus);
+    setTransition(true);
+  }, [menuStatus]);
+  const closeMenu = () => {
+    CookieManager.setCookie("sidebar", false);
+    setMenu(false);
+    setTransition(true);
+  };
 
   const onNavigate = (data) => {
     navigate(data.value);
@@ -22,14 +37,19 @@ export default function SideNavToolbar({ children }) {
 
   return (
     <div className={"side-nav-inner-toolbar"}>
-      <SideNavigationMenu selectedItemChanged={onNavigate} />
-      <div className={"content-block"}>
+      <SideNavigationMenu
+        selectedItemChanged={onNavigate}
+        toggleMenu={toggleMenu}
+        menuStatus={menuStatus}
+        transition={transition}
+      />
+      <div className={"content-block"} onClick={closeMenu}>
         {React.Children.map(children, (item) => {
           return item.type === Header && item;
         })}
         <div className={"content"} id="main-content">
           {React.Children.map(children, (item) => {
-            return (item.type !== Footer && item.type !== Header) && item;
+            return item.type !== Footer && item.type !== Header && item;
           })}
         </div>
         {React.Children.map(children, (item) => {
