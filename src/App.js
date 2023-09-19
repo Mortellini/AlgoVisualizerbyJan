@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { useScreenSizeClass } from "./utils/media-query";
 
+import Header from "./components/page-components/header/Header";
 import Footer from "./components/page-components/footer/Footer";
 import SideNavToolbar from "./layouts/side-nav-toolbar/side-nav-toolbar";
 import Loading from "./components/page-components/loading/loading";
@@ -31,6 +32,7 @@ export default function Root() {
       <NavigationProvider>
         <div className={`app ${screenSizeClass}`}>
           <SideNavToolbar title={appInfo.title}>
+            <Header></Header>
             <Routes>
               {routes.map(({ path, element }) => (
                 <Route

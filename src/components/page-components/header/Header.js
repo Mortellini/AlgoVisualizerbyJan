@@ -1,44 +1,18 @@
 import React /*, {useState, useEffect}*/ from "react";
 
+import appInfo from "../../../app-info";
+
 import "./Header.scss";
 
-export default function Header({ menuToggleEnabled, title, toggleMenu }) {
+export default function Header() {
+  const { title } = appInfo;
   return (
-    <header className={"header-component"}>
-      {/* <Toolbar className={"header-toolbar"}>
-        <Item
-          visible={menuToggleEnabled}
-          location={"before"}
-          widget={"dxButton"}
-          cssClass={"menu-button"}
-        >
-          <Button icon="menu" stylingMode="text" onClick={toggleMenu} />
-        </Item>
-        <Item
-          location={"before"}
-          cssClass={"header-title"}
-          text={title}
-          visible={!!title}
-        />
-
-        <Item
-          location={"after"}
-          locateInMenu={"auto"}
-          menuItemTemplate={"userPanelTemplate"}
-        >
-          <Button
-            className={"user-button authorization"}
-            width={210}
-            height={"100%"}
-            stylingMode={"text"}
-          >
-            <UserPanel menuMode={"context"} />
-          </Button>
-        </Item>
-        <Template name={"userPanelTemplate"}>
-          <UserPanel menuMode={"list"} />
-        </Template>
-      </Toolbar> */}
+    <header className={"header-container"}>
+      <div className={"header"}>
+        <div className={"header-title"}>
+          <h1 className="header-title-text">{title}</h1>
+        </div>
+      </div>
     </header>
   );
 }
