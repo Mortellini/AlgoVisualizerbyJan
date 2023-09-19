@@ -21,7 +21,7 @@ async function countingSort(arr, options) {
   // store count of each character
   for (let i = 0; i < n; ++i) {
     if (!options.cancelled) return;
-    arr[i][1] = 1;
+    arr[i][1] = 3;
     ++count[arr[i][0]];
 
     if (!options.onlyDelayOuterLoop) await sleep(options.delay);

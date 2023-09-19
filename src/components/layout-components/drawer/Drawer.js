@@ -46,7 +46,7 @@ export default function Drawer(props) {
   // TODO: Make animation only happen when the drawer is opened/closed not on every render
   return (
     <div className={"drawer " + animationClass + " " + drawerStyle}>
-      <div className={"drawer-content " + (drawerStyle)}>
+      <div className={"drawer-content "}>
         {React.Children.map(props.children, (child) => {
           return child;
         })}

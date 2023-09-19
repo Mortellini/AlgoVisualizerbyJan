@@ -1,21 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 
-import CookieManager from "../../../utils/cookie-manager";
 import AlgoDescription from "./algo-description/AlgoDescription";
 import AlgoControls from "./algo-controls/AlgoControls";
+import { resizeCanvas } from "../../../utils/canvas-drawing";
 
 import "./AlgoDisplay.scss";
 
-const canvasMainColors = {
-  "light-mode": {
-    "primary": "#ffffff",
-    "secondary": "#000000",
-  },
-  "dark-mode": {
-    "primary": "#000000",
-    "secondary": "#ffffff",
-  },
-}
 
 /**
  * AlgoDisplay component
@@ -30,9 +20,9 @@ const canvasMainColors = {
  * @returns {JSX.Element} the algo display
  */
 export default function AlgoDisplay(props) {
+  const { algo, data, drawData } = props;
   const [showDescription, setShowDescription] = useState(false);
   const [showControls, setShowControls] = useState(false);
-  const [array, setArray] = useState(new Array(100).fill(0));
   const canvasRef = useRef(null);
 
   const toggleDescription = () => {
@@ -44,53 +34,12 @@ export default function AlgoDisplay(props) {
     setShowControls(!showControls);
   };
 
-  const resizeCanvas = () => {
-    console.log("resize");
-    const canvas = canvasRef.current;
-    let width = canvas.parentElement.clientWidth;
-    let height = canvas.parentElement.clientHeight;
-    const ctx = canvas.getContext("2d");
-    ctx.canvas.width = width;
-    ctx.canvas.height = height;
-  };
-
-  const setupArray = () => {
-    for (let i = 0; i < array.length; i++) {
-      array[i] = Math.floor(Math.random() * array.length);
-    }
-    setArray([...array]);
-  };
-
-  const drawArray = () => {
-    console.log("draw");
-    const mainColor = canvasMainColors[CookieManager.getCookie("theme")].secondary;
-    const canvas = canvasRef.current;
-    const width = canvas.parentElement.clientWidth;
-    const height = canvas.parentElement.clientHeight;
-    const barWidth = (width / array.length)-1;
-    const barHeight = height / array.length;
-    const ctx = canvas.getContext("2d");
-
-    ctx.fillStyle = canvasMainColors[CookieManager.getCookie("theme")].primary;
-    ctx.fillRect(0, 0, width, height);
-
-    ctx.fillStyle = mainColor;
-    for (let i = 0; i < array.length; i++) {
-      ctx.fillRect(i * (barWidth+1), height - array[i] * barHeight, barWidth, array[i] * barHeight);
-    }
-
-
-  };
-
-
   useEffect(() => {
-    resizeCanvas();
-    setupArray();
-    canvasRef.current.parentElement.addEventListener("resize", resizeCanvas);
+    resizeCanvas(canvasRef);
     const themeObserver = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.attributeName === "class") {
-          drawArray();
+          drawData(canvasRef, data);
         }
       });
     });
@@ -98,8 +47,8 @@ export default function AlgoDisplay(props) {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    drawArray();
-  }, [array]); // eslint-disable-line react-hooks/exhaustive-deps
+    props.drawData(canvasRef, data);
+  }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
   return (
@@ -113,23 +62,23 @@ export default function AlgoDisplay(props) {
             <div className="reset-button"></div>
           </div>
           <div className="algo-display-canvas-overlay-legend">
-            {/*props.algo.legend*/}
+            {/*algo.legend*/}
           </div>
           <div className="algo-display-canvas-overlay-stats">
-            {/*props.algo.stats*/}
+            {/*algo.stats*/}
           </div>
         </div>
       </div>
       <div className="algo-display-controls">
         <AlgoControls
-          algo={props.algo}
+          algo={algo}
           expanded={showControls}
           toggleExpandend={toggleControls}
         />
       </div>
       <div className="algo-display-description">
         <AlgoDescription
-          algo={props.algo}
+          algo={algo}
           expanded={showDescription}
           toggleExpandend={toggleDescription}
         />

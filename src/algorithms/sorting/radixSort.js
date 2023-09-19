@@ -14,7 +14,7 @@ async function radixSort(arr, options){
         let digitValues = Array.from({length: 10}, (_, i) => []);
         for (let j = 0; j < arr.length; j++) {
             if (!options.cancelled) return;
-            arr[j][1] = 1;
+            arr[j][1] = 3;
 
             let digit = Math.floor(arr[j][0] / Math.pow(10, i)) % 10;
             digitValues[digit].push(arr[j]);

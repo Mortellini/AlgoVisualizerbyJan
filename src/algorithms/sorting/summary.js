@@ -591,16 +591,34 @@ const sortingOptions = {
 
 const sortingLegend = {
   compare: {
+    key: 1,
     color: "#ff0000",
     text: "Comparision",
   },
   swap: {
-    color: "#00ff00",
+    key: 2,
+    color: "#0000ff",
     text: "Swap",
   },
+  current: {
+    key: 3,
+    color: "#ff00ff",
+    text: "Current",
+  },
+  pivot: {
+    key: 4,
+    color: "#ff00ff",
+    text: "Pivot",
+  },
   sorted: {
-    color: "#0000ff",
-    text: "Sorted",
+    key: 5,
+    color: "#00ff00",
+    text: "Sorted Correctly",
+  },
+  sortedWrong: {
+    key: 6,
+    color: "#ff0000",
+    text: "Sorted Wrong",
   },
 };
 

@@ -22,6 +22,7 @@ async function sort(array, left, right, options) {
 
 async function partition(array, left, right, options) {
     let pivot = array[right];
+    pivot[1] = 4;
     let prevI
     let i = left;
     for (let j = left; j < right; j++) {
@@ -44,6 +45,7 @@ async function partition(array, left, right, options) {
     swap(array, i, right, options.showSwap);
     array[right][1] = 0;
     array[i][1] = 0;
+    pivot[1] = 0;
 
     return i;
 }
