@@ -52,6 +52,7 @@ export default function SideNavigationMenu(props) {
       direction={"horizontal"}
       transition={transition}
       opened={menuStatus}
+      mode={"overlay"}
     >
       <div className="side-naviagation-menu-header" onClick={openMenu}>
         <div className="side-naviagation-menu-header-title">

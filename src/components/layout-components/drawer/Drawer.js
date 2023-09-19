@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 
 import "./Drawer.scss";
 
+const drawerStyles = {
+  "expand": "drawer-expand",
+  "overlay": "drawer-overlay",
+}
+
 /**
  * Side drawer component
  *
@@ -9,14 +14,16 @@ import "./Drawer.scss";
  * @param {boolean} props.opened whether the drawer is opened or not
  * @param {boolean} props.transition whether the drawer should transition or not
  * @param {string} props.direction the direction of the drawer
+ * @param {string} props.mode the mode of the drawer#
  * @param {React.ReactNode} props.children the children
  * @returns {React.ReactNode} the drawer
  */
 export default function Drawer(props) {
-  const { opened, direction, transition } = props;
+  const { opened, direction, transition, mode } = props;
   const drawerClass = direction ? `drawer-${direction}` : "";
   const animationDuration = 300;
   const [animationClass, setAnimationClass] = useState(drawerClass);
+  const drawerStyle = drawerStyles[mode];
 
   useEffect(() => {
     if (!transition) {
@@ -38,8 +45,8 @@ export default function Drawer(props) {
   // TODO: Rewrite to be more generic (top/bottom/left/right)
   // TODO: Make animation only happen when the drawer is opened/closed not on every render
   return (
-    <div className={"drawer " + animationClass}>
-      <div className={"drawer-content"}>
+    <div className={"drawer " + animationClass + " " + drawerStyle}>
+      <div className={"drawer-content " + (drawerStyle)}>
         {React.Children.map(props.children, (child) => {
           return child;
         })}
