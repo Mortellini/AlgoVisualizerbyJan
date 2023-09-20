@@ -12,19 +12,19 @@ async function combSort(array, options) {
     gap = getGap(gap);
 
     for (let i = 0; i < array.length - gap; i++) {
-      if (!options.cancelled) return;
+      if (options.cancelled) return;
 
       if (options.showCompare) {
-        array[i][1] = 1;
-        array[i + gap][1] = 1;
+        array[i] = [array[i][0], 1];
+        array[i + gap] = [array[i + gap][0], 1];
       }
       if (array[i][0] > array[i + gap][0]) {
         swap(array, i, i + gap, options.showSwap);
         swapped = true;
       }
 
-      array[i][1] = 0;
-      array[i + gap][1] = 0;
+      array[i] = [array[i][0], 0];
+      array[i + gap] = [array[i + gap][0], 0];
 
       if (!options.onlyDelayOuterLoop) await sleep(options.delay);
     }

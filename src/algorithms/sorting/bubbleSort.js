@@ -9,19 +9,19 @@ async function bubbleSort(array, options) {
     
     swapped = false;
     for (j = 0; j < array.length - 1 - i; j++) {
-      if (!options.cancelled) return;
+      if (options.cancelled) return;
 
       if (options.showCompare) {
-        array[j][1] = 1;
-        array[j + 1][1] = 1;
+        array[j] = [array[j][0], 1];
+        array[j + 1] = [array[j + 1][0], 1];
       }
       if (array[j][0] > array[j + 1][0]) {
         swap(array, j, j + 1, options.showSwap);
         swapped = true;
       }
-      array[j][1] = 0;
-      array[j + 1][1] = 0;
-      if (!options.onlyDelayOuterLoop) {
+      array[j] = [array[j][0], 0];
+      array[j + 1] = [array[j + 1][0], 0];
+      if (options.onlyDelayOuterLoop) {
         await sleep(options.delay);
       }
     }

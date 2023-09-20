@@ -571,7 +571,17 @@ const sortingOptions = {
     valueType: null,
     text: "Sort",
     icon: "fa-solid fa-arrow-down-short-wide",
-    action: (grid, options) => {
+    action: (
+      grid,
+      options = {
+        algorithm: "Selection",
+        onlyDelayOuterLoop: false,
+        showCompare: true,
+        showSwap: true,
+        delay: 1,
+        cancelled: false,
+      }
+    ) => {
       const algorithm = sortingAlgoritmFunctionMap[options.algorithm];
       algorithm(grid, options);
       RunningAlgorithmManager.trackAlgorithmOptions(options);
@@ -586,6 +596,9 @@ const sortingOptions = {
     type: null,
     defaultValue: false,
     valueType: Boolean,
+    action: () => {
+      RunningAlgorithmManager.stopCurrentAlgorithm();
+    },
   },
 };
 
@@ -637,4 +650,10 @@ const sortingStats = {
   },
 };
 
-export { sortingAlgoritms, sortingAlgoritmFunctionMap, sortingOptions, sortingLegend, sortingStats };
+export {
+  sortingAlgoritms,
+  sortingAlgoritmFunctionMap,
+  sortingOptions,
+  sortingLegend,
+  sortingStats,
+};

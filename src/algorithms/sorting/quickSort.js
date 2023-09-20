@@ -9,7 +9,7 @@ async function quickSort(array, options) {
 }
 
 async function sort(array, left, right, options) {
-    if (left > right || !options.cancelled) return;
+    if (left > right || options.cancelled) return;
     
     let mid = await partition(array, left, right, options);
 
@@ -21,31 +21,30 @@ async function sort(array, left, right, options) {
 }
 
 async function partition(array, left, right, options) {
-    let pivot = array[right];
-    pivot[1] = 4;
+    let pivot = [array[right][0], 4];
     let prevI
     let i = left;
     for (let j = left; j < right; j++) {
-        if (!options.cancelled) return;
-        pivot[1] = 1;
-        array[j][1] = 1;
+        if (options.cancelled) return;
+        pivot = [pivot[0], 4];
+        array[j] = [array[j][0], 1];
         prevI = i;
 
         if (array[j][0] <= pivot[0]) {
             swap(array, i, j, options.showSwap);
-
             i++;
         }
 
         if(!options.onlyDelayOuterLoop) await sleep(options.delay);
-        array[j][1] = 0;
-        array[prevI][1] = 0;
+        array[j] = [array[j][0], 0];
+        array[prevI] = [array[prevI][0], 0];
+        pivot = [pivot[0], 4]
 
     }
     swap(array, i, right, options.showSwap);
-    array[right][1] = 0;
-    array[i][1] = 0;
-    pivot[1] = 0;
+    array[right] = [array[right][0], 0];
+    array[i] = [array[i][0], 0];
+    pivot = [pivot[0], 0];
 
     return i;
 }

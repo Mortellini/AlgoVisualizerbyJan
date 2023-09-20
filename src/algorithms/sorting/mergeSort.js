@@ -8,7 +8,7 @@ async function mergeSort(array, options) {
 }
 
 async function sort(arr, lo, hi, options) {
-  if (hi <= lo || !options.cancelled) return;
+  if (hi <= lo || options.cancelled) return;
   let mid = lo + parseInt((hi - lo) / 2);
 
   await sort(arr, lo, mid, options);
@@ -28,11 +28,11 @@ async function merge(arr, l, m, r, options) {
 
   // Copy data to temp arrays L[] and R[]
   for (let i = 0; i < n1; i++) {
-    if (!options.cancelled) return;
+    if (options.cancelled) return;
     L[i] = arr[l + i];
   }
   for (let j = 0; j < n2; j++) {
-    if (!options.cancelled) return;
+    if (options.cancelled) return;
     R[j] = arr[m + 1 + j];
   }
 
@@ -43,22 +43,22 @@ async function merge(arr, l, m, r, options) {
   let k = l;
 
   while (i < n1 && j < n2) {
-    if (!options.cancelled) return;
-    L[i][1] = 1;
-    R[j][1] = 1;
+    if (options.cancelled) return;
+    L[i] = [L[i][0], 1];
+    R[j] = [R[j][0], 1];
     let prevI = i;
     let prevJ = j;
     if (!options.onlyDelayOuterLoop) await sleep(options.delay);
 
     if (L[i][0] <= R[j][0]) {
-      arr[l + i][1] = 2;
-      L[i][1] = 2;
+      arr[l + i] = [arr[l + i][0], 2];
+      L[i] = [L[i][0], 2];
 
       arr[k] = L[i];
       i++;
     } else {
-      arr[m + 1 + j][1] = 2;
-      R[j][1] = 2;
+      arr[m + 1 + j] = [arr[m + 1 + j][0], 2];
+      R[j] = [R[j][0], 2];
 
       arr[k] = R[j];
       j++;
@@ -66,29 +66,29 @@ async function merge(arr, l, m, r, options) {
     k++;
 
     if (!options.onlyDelayOuterLoop) await sleep(options.delay);
-    arr[l + prevI][1] = 0;
-    arr[m + 1 + prevJ][1] = 0;
-    arr[k - 1][1] = 0;
+    arr[l + prevI] = [arr[l + prevI][0], 0];
+    arr[m + 1 + prevJ] = [arr[m + 1 + prevJ][0], 0];
+    arr[k - 1] = [arr[k - 1][0], 0];
   }
 
   while (i < n1) {
-    if (!options.cancelled) return;
-    arr[l + i][1] = 2;
-    L[i][1] = 2;
+    if (options.cancelled) return;
+    arr[l + i] = [arr[l + i][0], 2];
+    L[i] = [L[i][0], 2];
 
     arr[k] = L[i];
     i++;
     k++;
 
     if (!options.onlyDelayOuterLoop) await sleep(options.delay);
-    arr[l + i - 1][1] = 0;
-    arr[k - 1][1] = 0;
+    arr[l + i - 1] = [arr[l + i - 1][0], 0];
+    arr[k - 1] = [arr[k - 1][0], 0];
   }
 
   while (j < n2) {
-    if (!options.cancelled) return;
-    arr[m + 1 + j][1] = 2;
-    R[j][1] = 2;
+    if (options.cancelled) return;
+    arr[m + 1 + j] = [arr[m + 1 + j][0], 2];
+    R[j] = [R[j][0], 2];
 
     arr[k] = R[j];
 
@@ -96,8 +96,8 @@ async function merge(arr, l, m, r, options) {
     k++;
 
     if (!options.onlyDelayOuterLoop) await sleep(options.delay);
-    arr[m + j][1] = 0;
-    arr[k - 1][1] = 0;
+    arr[m + j] = [arr[m + j][0], 0];
+    arr[k - 1] = [arr[k - 1][0], 0];
   }
 }
 
