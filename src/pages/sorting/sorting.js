@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import BasePage from "../base-page/BasePage";
 import TabView from "../../components/layout-components/tab-view/TabView";
@@ -10,9 +10,15 @@ import {
   sortingStats,
 } from "../../algorithms/sorting/summary";
 import { drawArray } from "../../utils/canvas-drawing";
+import ObservableArray from "../../utils/ObservableArray";
 
 import "./sorting.scss";
 
+
+const array = new ObservableArray([]);
+for (let i = 1; i <= 100; i++) {
+  array.push([i, 0]);
+}
 
 /**
  * Sorting page
@@ -20,27 +26,16 @@ import "./sorting.scss";
  * @returns {JSX.Element} the sorting page
  */
 export default function Sorting() {
-  const [array, setArray] = useState(new Array(100).fill(0));
-
-  const setupArray = () => {
-    for (let i = 0; i < array.length; i++) {
-      array[i] = Math.floor(Math.random() * array.length);
-    }
-    setArray([...array]);
-  };
-
-
-  sortingAlgoritms.forEach((algo) => {
-    algo.content = (
-      <AlgoDisplay algo={algo} data={array} drawData={drawArray} />
-    );
-    algo.controls = sortingOptions;
-    algo.legend = sortingLegend;
-    algo.stats = sortingStats;
-  });
 
   useEffect(() => {
-    setupArray();
+    sortingAlgoritms.forEach((algo) => {
+      algo.content = (
+        <AlgoDisplay algo={algo} data={array} drawData={drawArray} />
+      );
+      algo.controls = sortingOptions;
+      algo.legend = sortingLegend;
+      algo.stats = sortingStats;
+    });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (

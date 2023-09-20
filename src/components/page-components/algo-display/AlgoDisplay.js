@@ -42,19 +42,21 @@ export default function AlgoDisplay(props) {
 
   useEffect(() => {
     resizeCanvas(canvasRef);
-    const themeObserver = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === "class") {
-          drawData(canvasRef, data);
-        }
-      });
+    data.addEventListener("itemset", (e) => {
+      console.log("itemset");
+      drawData(canvasRef, data);
     });
-    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    data.addEventListener("itemadded", (e) => {
+      console.log("itemadded");
+      drawData(canvasRef, data);
+    });
+    data.addEventListener("itemremoved", (e) => {
+      console.log("itemremoved");
+      drawData(canvasRef, data);
+    });
+    drawData(canvasRef, data);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    props.drawData(canvasRef, data);
-  }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
   return (

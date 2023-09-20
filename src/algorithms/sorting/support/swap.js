@@ -5,13 +5,13 @@
  * @param {*} j 
  */
 function swap(arr, i, j, showSwap) {
-  var temp = arr[i];
-  arr[i] = arr[j];
-  arr[j] = temp;
   if (showSwap) {
     arr[i][1] = 2;
     arr[j][1] = 2;
   }
+  var temp = arr[i];
+  arr[i] = arr[j];
+  arr[j] = temp;
 }
 
 export default swap;

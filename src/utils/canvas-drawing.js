@@ -30,6 +30,7 @@ export const drawArray = (canvasRef, array) => {
   console.log("draw");
   const mainColor =
     canvasMainColors[CookieManager.getCookie("theme")].secondary;
+  arrayColors[0] = mainColor;
   const canvas = canvasRef.current;
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
@@ -42,11 +43,12 @@ export const drawArray = (canvasRef, array) => {
 
   ctx.fillStyle = mainColor;
   for (let i = 0; i < array.length; i++) {
+    ctx.fillStyle = arrayColors[array[i][1]];
     ctx.fillRect(
       i * (barWidth + 1),
-      height - array[i] * barHeight,
+      height - (array[i][0]+1) * barHeight,
       barWidth,
-      array[i] * barHeight
+      array[i][0] * barHeight
     );
   }
 };
