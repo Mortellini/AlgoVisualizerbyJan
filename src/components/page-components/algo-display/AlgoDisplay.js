@@ -5,7 +5,7 @@ import AlgoControls from "./algo-controls/AlgoControls";
 import { resizeCanvas } from "../../../utils/canvas-drawing";
 
 import "./AlgoDisplay.scss";
-
+import ButtonBox from "../../controll-components/button-box/ButtonBox";
 
 /**
  * AlgoDisplay component
@@ -43,21 +43,16 @@ export default function AlgoDisplay(props) {
   useEffect(() => {
     resizeCanvas(canvasRef);
     data.addEventListener("itemset", (e) => {
-      console.log("itemset");
       drawData(canvasRef, data);
     });
     data.addEventListener("itemadded", (e) => {
-      console.log("itemadded");
       drawData(canvasRef, data);
     });
     data.addEventListener("itemremoved", (e) => {
-      console.log("itemremoved");
       drawData(canvasRef, data);
     });
     drawData(canvasRef, data);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-
 
   return (
     <div className="algo-display" onClick={closePanels}>
@@ -65,9 +60,27 @@ export default function AlgoDisplay(props) {
         <canvas id="canvas" ref={canvasRef} width={0} height={0}></canvas>
         <div className="algo-display-canvas-overlay">
           <div className="algo-display-canvas-overlay-quickaccess">
-            <div className="run-button"></div>
-            <div className="stop-button"></div>
-            <div className="reset-button"></div>
+            <ButtonBox
+              icon={"fa-solid fa-play"}
+              title={"Run"}
+              onClick={() => {
+                algo.controls.run.action(data);
+              }}
+            />
+            <ButtonBox
+              icon={"fa-solid fa-stop"}
+              title={"Stop"}
+              onClick={() => {
+                algo.controls.stop.action(data);
+              }}
+            />
+            <ButtonBox
+              icon={"fa-solid fa-undo"}
+              title={"Reset"}
+              onClick={() => {
+                algo.controls.reset.action(data);
+              }}
+            />
           </div>
           <div className="algo-display-canvas-overlay-legend">
             {/*algo.legend*/}

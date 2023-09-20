@@ -46,7 +46,7 @@ export const drawArray = (canvasRef, array) => {
     ctx.fillStyle = arrayColors[array[i][1]];
     ctx.fillRect(
       i * (barWidth + 1),
-      height - (array[i][0]+1) * barHeight,
+      height - (array[i][0]) * barHeight,
       barWidth,
       array[i][0] * barHeight
     );

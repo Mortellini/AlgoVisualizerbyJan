@@ -11,6 +11,7 @@ import {
 } from "../../algorithms/sorting/summary";
 import { drawArray } from "../../utils/canvas-drawing";
 import ObservableArray from "../../utils/ObservableArray";
+import shuffelArray from "../../algorithms/sorting/support/shuffelArray"
 
 import "./sorting.scss";
 
@@ -19,6 +20,8 @@ const array = new ObservableArray([]);
 for (let i = 1; i <= 100; i++) {
   array.push([i, 0]);
 }
+shuffelArray(array);
+
 
 /**
  * Sorting page
