@@ -583,7 +583,12 @@ const sortingOptions = {
       }
     ) => {
       const algorithm = sortingAlgoritmFunctionMap[options.algorithm];
-      algorithm(grid, options);
+      sortingStats.time.value = 0;
+      sortingStats.time.baseValue = new Date().getTime();
+      sortingStats.comparisons.value = 0;
+      sortingStats.swaps.value = 0;
+      sortingStats.time.startCounting();
+      RunningAlgorithmManager.trackAlgorithm(algorithm(grid, options, sortingStats));
       RunningAlgorithmManager.trackAlgorithmOptions(options);
     },
   },
@@ -598,6 +603,7 @@ const sortingOptions = {
     valueType: Boolean,
     action: () => {
       RunningAlgorithmManager.stopCurrentAlgorithm();
+      RunningAlgorithmManager.stopAlgorithm();
     },
   },
 };
@@ -639,14 +645,60 @@ const sortingStats = {
   comparisons: {
     text: "Comparisons",
     value: 0,
+    increment: function (count = 1) {
+      this.value += count;
+      this.listener.listeners.forEach((listener) => listener(this.value));
+    },
+    listener: {
+      listeners: [],
+      addListener: function (listener) {
+        this.listeners.push(listener);
+      },
+      removeListener: function (listener) {
+        this.listeners = this.listeners.filter((l) => l !== listener);
+      },
+    }
   },
   swaps: {
     text: "Swaps",
     value: 0,
+    increment: function (count = 1) {
+      this.value += count;
+      this.listener.listeners.forEach((listener) => listener(this.value));
+    },
+    listener: {
+      listeners: [],
+      addListener: function (listener) {
+        this.listeners.push(listener);
+      },
+      removeListener: function (listener) {
+        this.listeners = this.listeners.filter((l) => l !== listener);
+      },
+    }
   },
   time: {
     text: "Time",
     value: 0,
+    baseValue: 0,
+    interval: null,
+    startCounting: function () {
+      this.interval = setInterval(() => {
+        this.value = new Date().getTime() - this.baseValue;
+        this.listener.listeners.forEach((listener) => listener(this.value));
+      }, 100);
+    },
+    stopCounting: function () {
+      clearInterval(this.interval);
+    },
+    listener: {
+      listeners: [],
+      addListener: function (listener) {
+        this.listeners.push(listener);
+      },
+      removeListener: function (listener) {
+        this.listeners = this.listeners.filter((l) => l !== listener);
+      },
+    }
   },
 };
 

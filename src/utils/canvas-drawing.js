@@ -9,6 +9,9 @@ const canvasMainColors = {
     primary: "#000000",
     secondary: "#ffffff",
   },
+  getColors: function () {
+    return this[CookieManager.getCookie("theme")] || this["dark-mode"];
+  },
 };
 
 const arrayColors = {
@@ -28,17 +31,16 @@ const arrayColors = {
  */
 export const drawArray = (canvasRef, array) => {
   console.log("draw");
-  const mainColor =
-    canvasMainColors[CookieManager.getCookie("theme")].secondary;
+  const mainColor = canvasMainColors.getColors().secondary;
   arrayColors[0] = mainColor;
   const canvas = canvasRef.current;
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
-  const barWidth = width / array.length - 1;
+  const barWidth = (width / array.length) - 1;
   const barHeight = height / array.length;
   const ctx = canvas.getContext("2d");
 
-  ctx.fillStyle = canvasMainColors[CookieManager.getCookie("theme")].primary;
+  ctx.fillStyle = canvasMainColors.getColors().primary;
   ctx.fillRect(0, 0, width, height);
 
   ctx.fillStyle = mainColor;

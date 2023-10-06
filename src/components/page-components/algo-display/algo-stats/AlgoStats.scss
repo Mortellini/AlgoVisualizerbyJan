@@ -1,0 +1,14 @@
+
+.algo-display-canvas-overlay-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    grid-template-rows: 1fr;
+    align-items: center;
+    justify-items: center;
+
+    .algo-display-canvas-overlay-stat {
+      font-size: 1.1em;
+      font-weight: 600;
+    }
+
+  }

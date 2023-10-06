@@ -17,7 +17,7 @@ import "./sorting.scss";
 
 
 const array = new ObservableArray([]);
-for (let i = 1; i <= 100; i++) {
+for (let i = 1; i <= 200; i++) {
   array.push([i, 0]);
 }
 shuffelArray(array);

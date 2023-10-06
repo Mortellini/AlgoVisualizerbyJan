@@ -1,7 +1,7 @@
 import sleep from "../generalSupport/sleep.js";
 import validateSort from "./support/validateSorting.js";
 
-async function countingSort(array, options) {
+async function countingSort(array, options, stats) {
   var n = array.length;
 
   // The output character array that will have sorted arr
@@ -12,7 +12,8 @@ async function countingSort(array, options) {
   let max = 0;
   for (let i in array) {
     if (options.cancelled) return;
-    array[i] = [array[i], 3];
+    array[i] = [array[i], 1];
+    stats.comparisons.increment();
     if (array[i][0] > max) {
       max = array[i][0];
     }
@@ -51,10 +52,12 @@ async function countingSort(array, options) {
     if (options.cancelled) return;
     array[i] = output[i];
 
+    stats.swaps.increment();
     if (array.length <= 2000) await sleep(options.delay);
     array[i] = [array[i][0], 0];
   }
 
+  stats.time.stopCounting();
   validateSort(array, options);
 }
 

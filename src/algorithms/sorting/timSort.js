@@ -2,19 +2,20 @@ import validateSorting from "./support/validateSorting.js";
 import sleep from "../generalSupport/sleep.js";
 import swap from "./support/swap.js";
 
-async function timSort(array, options) {
+async function timSort(array, options, stats) {
   for (let i = 0; i < array.length; i += 32) {
     if (options.cancelled) return;
-    await insertionSort(array, i, Math.min(i + 31, array.length - 1), options);
-    await merge(array, 0, i - 1, Math.min(i + 31, array.length - 1), options);
+    await insertionSort(array, i, Math.min(i + 31, array.length - 1), options, stats);
+    await merge(array, 0, i - 1, Math.min(i + 31, array.length - 1), options, stats);
 
     if (array.length <= 2000) await sleep(options.delay);
   }
 
+  stats.time.stopCounting();
   validateSorting(array, options);
 }
 
-async function merge(arr, l, m, r, options) {
+async function merge(arr, l, m, r, options, stats) {
   let n1 = m - l + 1;
   let n2 = r - m;
 
@@ -46,6 +47,7 @@ async function merge(arr, l, m, r, options) {
     let prevJ = j;
     if (!options.onlyDelayOuterLoop) await sleep(options.delay);
 
+    stats.comparisons.increment();
     if (L[i][0] <= R[j][0]) {
       arr[l + i] = [arr[l + i][0], 2];
       L[i] = [L[i][0], 2];
@@ -59,6 +61,7 @@ async function merge(arr, l, m, r, options) {
       arr[k] = R[j];
       j++;
     }
+    stats.swaps.increment();
     k++;
 
     if (!options.onlyDelayOuterLoop) await sleep(options.delay);
@@ -71,6 +74,7 @@ async function merge(arr, l, m, r, options) {
     if (options.cancelled) return;
     arr[l + i] = [arr[l + i][0], 2];
     L[i] = [L[i][0], 2];
+    stats.swaps.increment();
 
     arr[k] = L[i];
     i++;
@@ -85,6 +89,7 @@ async function merge(arr, l, m, r, options) {
     if (options.cancelled) return;
     arr[m + 1 + j] = [arr[m + 1 + j][0], 2];
     R[j] = [R[j][0], 2];
+    stats.swaps.increment();
 
     arr[k] = R[j];
 
@@ -97,7 +102,7 @@ async function merge(arr, l, m, r, options) {
   }
 }
 
-async function insertionSort(array, startIdx, endIdx, options) {
+async function insertionSort(array, startIdx, endIdx, options, stats) {
   let i, j;
   for (i = startIdx; i <= endIdx; i++) {
     j = i;
@@ -107,7 +112,8 @@ async function insertionSort(array, startIdx, endIdx, options) {
         array[j - 1] = [array[j - 1][0], 1];
         array[j] = [array[j][0], 1];
       }
-      swap(array, j - 1, j, options.showSwap);
+      stats.comparisons.increment();
+      swap(array, j - 1, j, options.showSwap, stats);
       if (!options.onlyDelayOuterLoop) await sleep(options.delay);
       array[j - 1] = [array[j - 1][0], 0];
       array[j] = [array[j][0], 0];

@@ -2,19 +2,20 @@ import sleep from "../generalSupport/sleep.js";
 import swap from "./support/swap.js";
 import validateSorting from "./support/validateSorting.js";
 
-async function selectionSort(array, options) {
+async function selectionSort(array, options, stats) {
     var i, j, min, exMin;
     for (i = 0; i < array.length; i++) {
         min = i;
         exMin = i;
         for (j = i; j < array.length; j++) {
             if (options.cancelled) {
-                return
-            };
+                return;
+            }
             if (options.showCompare) {
                 array[min] = [array[min][0], 1];
                 array[j] = [array[j][0], 1];
             }
+            stats.comparisons.increment();
             if (array[min][0] > array[j][0]) {
                 exMin = min;
                 min = j;
@@ -29,13 +30,14 @@ async function selectionSort(array, options) {
             if (i>0) ;
         }
         
-        swap(array, min, i, options.showSwap);
+        swap(array, min, i, options.showSwap, stats);
 
         if(array.length <= 2000) await sleep(options.delay);
         array[i] = [array[i][0], 0];
         array[min] = [array[min][0], 0];
     }
-    console.log("selectionSort done");
+    
+    stats.time.stopCounting();
     validateSorting(array, options);
 }
 

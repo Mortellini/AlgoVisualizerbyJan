@@ -20,25 +20,6 @@
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       
-      .algo-display-canvas-overlay-quickaccess{
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        border-right: 4px double var(--border);
-
-        .button-box{
-          padding: 0;
-          border-right: 1px solid var(--border);
-
-          &:last-child{
-            border-right: none;
-          }
-          .button-box-button{
-            margin: auto;
-            width: min-content;
-          }
-        }
-
-      }
       .algo-display-canvas-overlay-legend {
         border-right: 4px double var(--border);
       }

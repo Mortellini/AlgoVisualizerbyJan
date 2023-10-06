@@ -1,5 +1,13 @@
 const RunningAlgorithmManager = {
     currentAlgorithmOptions: {},
+    currentAlgorithm: null,
+    trackAlgorithm: function (algorithm) {
+        console.log("track", algorithm);
+        this.currentAlgorithm = algorithm;
+    },
+    stopAlgorithm: function () {
+        console.log("stop", this.currentAlgorithm);
+    },
     /**
      * Save the current algorithm options
      * 

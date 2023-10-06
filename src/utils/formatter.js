@@ -18,6 +18,15 @@ const shortenNumber = (number) => {
   }
   return `${Math.round(number / 100000000) / 10}B`;
 };
+const shortenTime = (number) => {
+  if (number < 1000) {
+    return number + "ms";
+  }
+  if (number < 60000) {
+    return `${Math.round(number / 100) / 10}s`;
+  }
+  return `${Math.floor(number / 60000)}:${formatNumber(Math.floor(number / 1000)%60)}min`;
+};
 
 const seperateNumber = (number) => {
   let result = "";
@@ -46,4 +55,4 @@ const formatTime = (date) => {
   )}:${formatNumber(date.getSeconds())}`;
 };
 
-export { formatDate, formatTime, formatNumber, shortenNumber, seperateNumber };
+export { formatDate, formatTime, shortenTime, formatNumber, shortenNumber, seperateNumber };

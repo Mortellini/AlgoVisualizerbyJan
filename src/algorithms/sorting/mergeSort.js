@@ -1,24 +1,25 @@
 import validateSorting from "./support/validateSorting.js";
 import sleep from "../generalSupport/sleep.js";
 
-async function mergeSort(array, options) {
-  await sort(array, 0, array.length - 1, options);
+async function mergeSort(array, options, stats) {
+  await sort(array, 0, array.length - 1, options, stats);
 
+  stats.time.stopCounting();
   validateSorting(array, options);
 }
 
-async function sort(arr, lo, hi, options) {
+async function sort(arr, lo, hi, options, stats) {
   if (hi <= lo || options.cancelled) return;
   let mid = lo + parseInt((hi - lo) / 2);
 
-  await sort(arr, lo, mid, options);
-  await sort(arr, mid + 1, hi, options);
-  await merge(arr, lo, mid, hi, options);
+  await sort(arr, lo, mid, options, stats);
+  await sort(arr, mid + 1, hi, options, stats);
+  await merge(arr, lo, mid, hi, options, stats);
 
   if (arr.length <= 2000) await sleep(options.delay);
 }
 
-async function merge(arr, l, m, r, options) {
+async function merge(arr, l, m, r, options, stats) {
   let n1 = m - l + 1;
   let n2 = r - m;
 
@@ -50,6 +51,7 @@ async function merge(arr, l, m, r, options) {
     let prevJ = j;
     if (!options.onlyDelayOuterLoop) await sleep(options.delay);
 
+    stats.comparisons.increment();
     if (L[i][0] <= R[j][0]) {
       arr[l + i] = [arr[l + i][0], 2];
       L[i] = [L[i][0], 2];
@@ -63,6 +65,7 @@ async function merge(arr, l, m, r, options) {
       arr[k] = R[j];
       j++;
     }
+    stats.swaps.increment();
     k++;
 
     if (!options.onlyDelayOuterLoop) await sleep(options.delay);
@@ -75,6 +78,7 @@ async function merge(arr, l, m, r, options) {
     if (options.cancelled) return;
     arr[l + i] = [arr[l + i][0], 2];
     L[i] = [L[i][0], 2];
+    stats.swaps.increment();
 
     arr[k] = L[i];
     i++;
@@ -89,6 +93,7 @@ async function merge(arr, l, m, r, options) {
     if (options.cancelled) return;
     arr[m + 1 + j] = [arr[m + 1 + j][0], 2];
     R[j] = [R[j][0], 2];
+    stats.swaps.increment();
 
     arr[k] = R[j];
 
