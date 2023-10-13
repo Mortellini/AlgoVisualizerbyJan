@@ -6,6 +6,11 @@ export default function ObservableArray(items) {
     itemremoved: [],
     itemset: [],
   };
+  var _limits = {
+    itemadded: -1,
+    itemremoved: -1,
+    itemset: -1,
+  };
 
   function defineIndexProperty(index) {
     if (!(index in _self)) {
@@ -40,8 +45,24 @@ export default function ObservableArray(items) {
     value: function (eventName, handler) {
       eventName = ("" + eventName).toLowerCase();
       if (!(eventName in _handlers)) throw new Error("Invalid event name.");
+      if (_limits[eventName] !== -1 && _handlers[eventName].length >= _limits[eventName]) {
+        return;
+        // throw new Error("Too many event listeners.");
+      }
       if (typeof handler !== "function") throw new Error("Invalid handler.");
+      if (_handlers[eventName].indexOf(handler) !== -1) return;
       _handlers[eventName].push(handler);
+    },
+  });
+
+  Object.defineProperty(_self, "limitEventListener", {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (eventName, count) {
+      eventName = ("" + eventName).toLowerCase();
+      if (!(eventName in _handlers)) throw new Error("Invalid event name.");
+      _limits[eventName] = count;
     },
   });
 
@@ -222,6 +243,7 @@ export default function ObservableArray(items) {
     _self.push.apply(_self, items);
   }
 }
+
 export function testing() {
 
     var x = new ObservableArray(["a", "b", "c", "d"]);

@@ -41,17 +41,21 @@ export default function AlgoDisplay(props) {
     setShowControls(false);
   };
 
+
   useEffect(() => {
+    let prevEvent = { index: -1};
+    const eventHandler = (e) => {
+      if (e.index === prevEvent.index) return;
+      prevEvent = e;
+      drawData(canvasRef, data);
+    }
     resizeCanvas(canvasRef);
-    data.addEventListener("itemset", (e) => {
-      drawData(canvasRef, data);
-    });
-    data.addEventListener("itemadded", (e) => {
-      drawData(canvasRef, data);
-    });
-    data.addEventListener("itemremoved", (e) => {
-      drawData(canvasRef, data);
-    });
+    data.limitEventListener("itemset", 1);
+    data.limitEventListener("itemadded", 1);
+    data.limitEventListener("itemremoved", 1);
+    data.addEventListener("itemset", eventHandler);
+    data.addEventListener("itemadded", eventHandler);
+    data.addEventListener("itemremoved", eventHandler);
     drawData(canvasRef, data);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
