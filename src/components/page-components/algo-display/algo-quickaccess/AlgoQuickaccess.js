@@ -10,7 +10,7 @@ export default function AlgoQuickaccess(props) {
             icon={"fa-solid fa-play"}
             title={"Run"}
             onClick={() => {
-              algo.controls.run.action(data);
+              algo.controls.run.action(data, algo.options);
             }}
           />
           <ButtonBox

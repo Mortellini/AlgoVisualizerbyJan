@@ -11,11 +11,12 @@ import "./TabItem.scss";
  * @returns {JSX.Element} the tab item
  */
 export default function TabItem(props) {
-  const { children, active, onClick } = props;
+  const { children, active, onClick, name } = props;
 
   return (
     <div
       className={`tab-item ${active ? "tab-item-active" : ""}`}
+      id={name}
       onClick={onClick}
     >
       {children}

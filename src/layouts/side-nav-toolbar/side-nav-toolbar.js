@@ -5,6 +5,7 @@ import SideNavigationMenu from "../../components/page-components/side-navigation
 import Header from "../../components/page-components/header/Header";
 import Footer from "../../components/page-components/footer/Footer";
 import CookieManager from "../../utils/cookie-manager";
+import RunningAlgorithmManager from "../../utils/running-algorithm-manager";
 
 import "./side-nav-toolbar.scss";
 
@@ -33,6 +34,7 @@ export default function SideNavToolbar({ children }) {
 
   const onNavigate = (data) => {
     navigate(data.value);
+    RunningAlgorithmManager.stopCurrentAlgorithm();
   };
 
   return (

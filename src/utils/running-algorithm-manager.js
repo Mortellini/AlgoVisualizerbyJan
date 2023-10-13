@@ -1,12 +1,6 @@
 const RunningAlgorithmManager = {
-    currentAlgorithmOptions: {},
-    currentAlgorithm: null,
-    trackAlgorithm: function (algorithm) {
-        console.log("track", algorithm);
-        this.currentAlgorithm = algorithm;
-    },
-    stopAlgorithm: function () {
-        console.log("stop", this.currentAlgorithm);
+    currentAlgorithmOptions: {
+        cancelled: false
     },
     /**
      * Save the current algorithm options
@@ -18,13 +12,17 @@ const RunningAlgorithmManager = {
      */
     trackAlgorithmOptions: function (algorithmOptions) {
         this.stopCurrentAlgorithm();
-        this.currentAlgorithm = algorithmOptions;
+        this.currentAlgorithmOptions = algorithmOptions;
+        this.currentAlgorithmOptions.cancelled = false;
     },
     /**
      * Stop the current algorithm
      */
     stopCurrentAlgorithm: function () {
         this.currentAlgorithmOptions.cancelled = true;
+        setTimeout(() => {
+            this.currentAlgorithmOptions.cancelled = false;
+        }, 200);
     }
 
 }

@@ -1,6 +1,7 @@
 import React from "react";
 
 import RunningAlgorithmManager from "../../utils/running-algorithm-manager";
+import CookieManager from "../../utils/cookie-manager";
 import selectionSort from "./selectionSort";
 import insertionSort from "./insertionSort";
 import bubbleSort from "./bubbleSort";
@@ -516,7 +517,7 @@ const sortingAlgoritmFunctionMap = sortingAlgoritms.reduce((map, algorithm) => {
   return map;
 }, {});
 
-const sortingOptions = {
+const sortingControlls = {
   showCompare: {
     defaultValue: true,
     valueType: Boolean,
@@ -564,7 +565,11 @@ const sortingOptions = {
     valueType: null,
     text: "Shuffle",
     icon: "fa-solid fa-shuffle",
-    action: (grid) => shuffleArray(grid),
+    action: (grid) => {
+      sortingStats.time.stopCounting();
+      RunningAlgorithmManager.stopCurrentAlgorithm();
+      shuffleArray(grid);
+    },
   },
   run: {
     type: "button",
@@ -588,25 +593,27 @@ const sortingOptions = {
       sortingStats.comparisons.value = 0;
       sortingStats.swaps.value = 0;
       sortingStats.time.startCounting();
-      RunningAlgorithmManager.trackAlgorithm(algorithm(grid, options, sortingStats));
+      algorithm(grid, options, sortingStats)
       RunningAlgorithmManager.trackAlgorithmOptions(options);
     },
-  },
-  algorithm: {
-    type: null,
-    defaultValue: "Selection",
-    valueType: String,
   },
   stop: {
     type: null,
     defaultValue: false,
     valueType: Boolean,
     action: () => {
+      sortingStats.time.stopCounting();
       RunningAlgorithmManager.stopCurrentAlgorithm();
-      RunningAlgorithmManager.stopAlgorithm();
     },
   },
 };
+const sortingOptions = Object.keys(sortingControlls).reduce((acc, key) => {
+  if (key === "run" || key === "stop" || key === "reset") return acc;
+  acc[key] = sortingControlls[key].defaultValue;
+  return acc;
+}, {});
+sortingOptions["algorithm"] = sortingAlgoritms[CookieManager.getCookie("activeSortingTabs")].name || "Selection";
+sortingOptions["cancelled"] = false;
 
 const sortingLegend = {
   compare: {
@@ -657,7 +664,7 @@ const sortingStats = {
       removeListener: function (listener) {
         this.listeners = this.listeners.filter((l) => l !== listener);
       },
-    }
+    },
   },
   swaps: {
     text: "Swaps",
@@ -674,7 +681,7 @@ const sortingStats = {
       removeListener: function (listener) {
         this.listeners = this.listeners.filter((l) => l !== listener);
       },
-    }
+    },
   },
   time: {
     text: "Time",
@@ -698,13 +705,14 @@ const sortingStats = {
       removeListener: function (listener) {
         this.listeners = this.listeners.filter((l) => l !== listener);
       },
-    }
+    },
   },
 };
 
 export {
   sortingAlgoritms,
   sortingAlgoritmFunctionMap,
+  sortingControlls,
   sortingOptions,
   sortingLegend,
   sortingStats,
