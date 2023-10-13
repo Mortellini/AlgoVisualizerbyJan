@@ -11,8 +11,8 @@ async function selectionSort(array, options, stats) {
             if (options.cancelled) {
                 return;
             }
-            if (options.showCompare) {
-                array[min] = [array[min][0], 1];
+            if (options.showCompare && !options.onlyDelayOuterLoop) {
+                array[min][1] = 1;
                 array[j] = [array[j][0], 1];
             }
             stats.comparisons.increment();
@@ -21,11 +21,11 @@ async function selectionSort(array, options, stats) {
                 min = j;
             }
             if(!options.onlyDelayOuterLoop) await sleep(options.delay);
-            array[exMin] = [array[exMin][0], 0];
+            array[exMin][1] = 0;
             array[j] = [array[j][0], 0];
         }
         if (options.showSwap) {
-            array[min] = [array[min][0], 2];
+            array[min][1] = 2;
             array[i] = [array[i][0], 2];
             if (i>0) ;
         }
@@ -33,7 +33,7 @@ async function selectionSort(array, options, stats) {
         swap(array, min, i, options.showSwap, stats);
 
         if(array.length <= 2000) await sleep(options.delay);
-        array[i] = [array[i][0], 0];
+        array[i][1] = 0;
         array[min] = [array[min][0], 0];
     }
     

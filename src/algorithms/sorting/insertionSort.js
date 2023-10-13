@@ -9,14 +9,14 @@ async function insertionSort(array, options, stats) {
     while (j > 0 && array[j - 1][0] > array[j][0]) {
       if (options.cancelled) return;
 
-      if (options.showCompare) {
-        array[j - 1] = [array[j - 1][0], 1];
+      if (options.showCompare && !options.onlyDelayOuterLoop) {
+        array[j - 1][1] = 1;
         array[j] = [array[j][0], 1];
       }
       stats.comparisons.increment();
       swap(array, j - 1, j, options.showSwap, stats);
       if (!options.onlyDelayOuterLoop) await sleep(options.delay);
-      array[j - 1] = [array[j - 1][0], 0];
+      array[j - 1][1] = 0;
       array[j] = [array[j][0], 0];
       j--;
     }

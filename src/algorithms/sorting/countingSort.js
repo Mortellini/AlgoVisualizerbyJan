@@ -12,7 +12,7 @@ async function countingSort(array, options, stats) {
   let max = 0;
   for (let i in array) {
     if (options.cancelled) return;
-    array[i] = [array[i], 1];
+    array[i] = [array[i][0], 1];
     stats.comparisons.increment();
     if (array[i][0] > max) {
       max = array[i][0];

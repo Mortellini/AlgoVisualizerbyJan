@@ -7,7 +7,7 @@ async function heapSort(arr, options, stats) {
   for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
     if (options.cancelled) return;
 
-    await heapify(arr, n, i, options);
+    await heapify(arr, n, i, options, stats);
     if (arr.length < 2000) await sleep(options.delay);
   }
   for (let i = n - 1; i > 0; i--) {
@@ -16,6 +16,9 @@ async function heapSort(arr, options, stats) {
     swap(arr, 0, i, options.showSwap, stats);
     await heapify(arr, i, 0, options, stats);
     if (arr.length <= 2000) await sleep(options.delay);
+    arr[0][1] = 0;
+    arr[i] = [arr[i][0], 0];
+
   }
 
   stats.time.stopCounting();
@@ -27,12 +30,12 @@ async function heapify(arr, n, i, options, stats) {
   let l = 2 * i + 1;
   let r = 2 * i + 2;
 
-  if (options.showCompare) {
+  if (options.showCompare && !options.onlyDelayOuterLoop) {
+    stats.comparisons.increment();
+    if (n > l) arr[l][1] = 1;
+    stats.comparisons.increment();
+    if (n > r) arr[r][1] = 1;
     arr[i] = [arr[i][0], 1];
-    stats.comparisons.increment();
-    if (n > l) arr[l] = [arr[l][0], 1];
-    stats.comparisons.increment();
-    if (n > r) arr[r] = [arr[r][0], 1];
   }
 
   stats.comparisons.increment();
@@ -49,16 +52,16 @@ async function heapify(arr, n, i, options, stats) {
 
     if (!options.onlyDelayOuterLoop) await sleep(options.delay);
 
+    if (n > l) arr[l][1] = 0;
+    if (n > r) arr[r][1] = 0;
     arr[i] = [arr[i][0], 0];
-    if (n > l) arr[l] = [arr[l][0], 0];
-    if (n > r) arr[r] = [arr[r][0], 0];
 
     await heapify(arr, n, largest, options, stats);
   }
 
+  if (n > l) arr[l][1] = 0;
+  if (n > r) arr[r][1] = 0;
   arr[i] = [arr[i][0], 0];
-  if (n > l) arr[l] = [arr[l][0], 0];
-  if (n > r) arr[r] = [arr[r][0], 0];
 }
 
 export default heapSort;

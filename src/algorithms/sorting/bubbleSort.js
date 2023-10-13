@@ -6,13 +6,12 @@ async function bubbleSort(array, options, stats) {
   let i, j;
   let swapped = true;
   for (i = 0; i < array.length && swapped; i++) {
-    
     swapped = false;
     for (j = 0; j < array.length - 1 - i; j++) {
       if (options.cancelled) return;
 
-      if (options.showCompare) {
-        array[j] = [array[j][0], 1];
+      if (options.showCompare && !options.onlyDelayOuterLoop) {
+        array[j][1] = 1;
         array[j + 1] = [array[j + 1][0], 1];
       }
       stats.comparisons.increment();
@@ -20,7 +19,7 @@ async function bubbleSort(array, options, stats) {
         swap(array, j, j + 1, options.showSwap, stats);
         swapped = true;
       }
-      array[j] = [array[j][0], 0];
+      array[j][1] =  0;
       array[j + 1] = [array[j + 1][0], 0];
       if (options.onlyDelayOuterLoop) {
         await sleep(options.delay);

@@ -26,8 +26,10 @@ async function partition(array, left, right, options, stats) {
   let i = left;
   for (let j = left; j < right; j++) {
     if (options.cancelled) return;
-    pivot = [pivot[0], 4];
-    array[j] = [array[j][0], 1];
+    if (options.showCompare && !options.onlyDelayOuterLoop) {
+      pivot[1] = 4;
+      array[j] = [array[j][0], 1];
+    }
     prevI = i;
 
     stats.comparisons.increment();
@@ -37,13 +39,13 @@ async function partition(array, left, right, options, stats) {
     }
 
     if (!options.onlyDelayOuterLoop) await sleep(options.delay);
-    array[j] = [array[j][0], 0];
-    array[prevI] = [array[prevI][0], 0];
+    array[j][1] = 0;
+    array[prevI][1] = 0;
     pivot = [pivot[0], 4];
   }
   swap(array, i, right, options.showSwap, stats);
-  array[right] = [array[right][0], 0];
-  array[i] = [array[i][0], 0];
+  array[right][1] = 0;
+  array[i][1] = 0;
   pivot = [pivot[0], 0];
 
   return i;

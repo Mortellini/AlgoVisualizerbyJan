@@ -14,8 +14,8 @@ async function combSort(array, options, stats) {
     for (let i = 0; i < array.length - gap; i++) {
       if (options.cancelled) return;
 
-      if (options.showCompare) {
-        array[i] = [array[i][0], 1];
+      if (options.showCompare && !options.onlyDelayOuterLoop) {
+        array[i][1] = 1;
         array[i + gap] = [array[i + gap][0], 1];
       }
       stats.comparisons.increment();
@@ -24,7 +24,7 @@ async function combSort(array, options, stats) {
         swapped = true;
       }
 
-      array[i] = [array[i][0], 0];
+      array[i][1] = 0;
       array[i + gap] = [array[i + gap][0], 0];
 
       if (!options.onlyDelayOuterLoop) await sleep(options.delay);

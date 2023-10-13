@@ -45,21 +45,23 @@ async function merge(arr, l, m, r, options, stats) {
 
   while (i < n1 && j < n2) {
     if (options.cancelled) return;
-    L[i] = [L[i][0], 1];
-    R[j] = [R[j][0], 1];
+    if(options.showCompare && !options.onlyDelayOuterLoop) {
+      L[i][1] = 1;
+      R[j] = [R[j][0], 1];
+    }
     let prevI = i;
     let prevJ = j;
     if (!options.onlyDelayOuterLoop) await sleep(options.delay);
 
     stats.comparisons.increment();
     if (L[i][0] <= R[j][0]) {
-      arr[l + i] = [arr[l + i][0], 2];
+      arr[l + i][1] = 2;
       L[i] = [L[i][0], 2];
 
       arr[k] = L[i];
       i++;
     } else {
-      arr[m + 1 + j] = [arr[m + 1 + j][0], 2];
+      arr[m + 1 + j][1] = 2;
       R[j] = [R[j][0], 2];
 
       arr[k] = R[j];
@@ -69,14 +71,14 @@ async function merge(arr, l, m, r, options, stats) {
     k++;
 
     if (!options.onlyDelayOuterLoop) await sleep(options.delay);
-    arr[l + prevI] = [arr[l + prevI][0], 0];
-    arr[m + 1 + prevJ] = [arr[m + 1 + prevJ][0], 0];
+    arr[l + prevI][1] = 0;
+    arr[m + 1 + prevJ][1] = 0;
     arr[k - 1] = [arr[k - 1][0], 0];
   }
 
   while (i < n1) {
     if (options.cancelled) return;
-    arr[l + i] = [arr[l + i][0], 2];
+    arr[l + i][1] = 2;
     L[i] = [L[i][0], 2];
     stats.swaps.increment();
 
@@ -85,13 +87,13 @@ async function merge(arr, l, m, r, options, stats) {
     k++;
 
     if (!options.onlyDelayOuterLoop) await sleep(options.delay);
-    arr[l + i - 1] = [arr[l + i - 1][0], 0];
+    arr[l + i - 1][1] = 0;
     arr[k - 1] = [arr[k - 1][0], 0];
   }
 
   while (j < n2) {
     if (options.cancelled) return;
-    arr[m + 1 + j] = [arr[m + 1 + j][0], 2];
+    arr[m + 1 + j][1] = 2;
     R[j] = [R[j][0], 2];
     stats.swaps.increment();
 
@@ -101,7 +103,7 @@ async function merge(arr, l, m, r, options, stats) {
     k++;
 
     if (!options.onlyDelayOuterLoop) await sleep(options.delay);
-    arr[m + j] = [arr[m + j][0], 0];
+    arr[m + j][1] = 0;
     arr[k - 1] = [arr[k - 1][0], 0];
   }
 }

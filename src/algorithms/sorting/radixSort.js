@@ -34,13 +34,13 @@ async function radixSort(array, options, stats) {
         if (options.cancelled) return;
 
         stats.swaps.increment();
+        digitValues[j][k][1] = 2;
         array[index] = digitValues[j][k];
-        array[index] = [array[index][0], 2];
         index++;
 
         if (!options.onlyDelayOuterLoop) await sleep(options.delay);
+        if (index > 1) array[index - 2][1] = 0;
         array[index - 1] = [array[index - 1][0], 0];
-        if (index > 1) array[index - 2] = [array[index - 2][0], 0];
       }
     }
     if (array.length <= 2000) await sleep(options.delay);
