@@ -49,14 +49,14 @@ export default function AlgoDisplay(props) {
       prevEvent = e;
       drawData(canvasRef, data);
     }
-    resizeCanvas(canvasRef);
+    resizeCanvas(canvasRef);  // TODO: On switching back and forth between tabs, canvas ref is null
     data.limitEventListener("itemset", 1);
     data.limitEventListener("itemadded", 1);
     data.limitEventListener("itemremoved", 1);
     data.addEventListener("itemset", eventHandler);
     data.addEventListener("itemadded", eventHandler);
     data.addEventListener("itemremoved", eventHandler);
-    drawData(canvasRef, data);
+    drawData(canvasRef, data); 
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 

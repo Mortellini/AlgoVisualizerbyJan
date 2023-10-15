@@ -612,7 +612,9 @@ const sortingOptions = Object.keys(sortingControlls).reduce((acc, key) => {
   acc[key] = sortingControlls[key].defaultValue;
   return acc;
 }, {});
-sortingOptions["algorithm"] = sortingAlgoritms[CookieManager.getCookie("activeSortingTabs")].name || "Selection";
+let lastAlgorithm = CookieManager.getCookie("lastAlgorithm");
+lastAlgorithm = lastAlgorithm ? sortingAlgoritms[lastAlgorithm].name : "Selection";
+sortingOptions["algorithm"] = 
 sortingOptions["cancelled"] = false;
 
 const sortingLegend = {
